@@ -2,6 +2,7 @@ package net.flandre923.tutorialmod.block;
 
 import com.mojang.blaze3d.shaders.Uniform;
 import net.flandre923.tutorialmod.TutorialMod;
+import net.flandre923.tutorialmod.block.custom.JumpBlock;
 import net.flandre923.tutorialmod.item.ModCreativeModeTab;
 import net.flandre923.tutorialmod.item.ModItem;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -49,6 +50,10 @@ public class ModBlocks {
     public static final RegistryObject<Block> DEEPSLATE_ZIRCON_ORE = registerBlock("deepslate_zircon_ore",
             () -> new DropExperienceBlock(BlockBehaviour.Properties.of(Material.STONE).strength(6f).requiresCorrectToolForDrops(),
             UniformInt.of(3,7)),
+            ModCreativeModeTab.TUTORIAL_TAB);
+
+    public static final RegistryObject<Block> JUMPY_BLOCK = registerBlock("jumpy_block",
+            () -> new JumpBlock(BlockBehaviour.Properties.of(Material.STONE).strength(6f).requiresCorrectToolForDrops()),
             ModCreativeModeTab.TUTORIAL_TAB);
     // 注册Block，由于需要注册Block以及该Block的Item所以这里写了一个函数用于同时注册Block和Item
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
