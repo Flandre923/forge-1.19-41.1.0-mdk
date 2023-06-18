@@ -1,9 +1,13 @@
 package net.flandre923.tutorialmod.item;
 
 import net.flandre923.tutorialmod.TutorialMod;
+import net.flandre923.tutorialmod.block.ModBlocks;
 import net.flandre923.tutorialmod.item.custom.EightBallItem;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemNameBlockItem;
+import net.minecraft.world.item.Items;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -24,6 +28,14 @@ public class ModItem {
     // 添加eight_ball 物品
     public static final RegistryObject<Item> EIGHT_BALL = ITEMS.register("eight_ball",
             () -> new EightBallItem(new Item.Properties().tab(ModCreativeModeTab.TUTORIAL_TAB).stacksTo(1)));
+
+    public static final RegistryObject<Item> BLUEBERRY_SEEDS = ITEMS.register("blueberry_seeds",
+            () -> new ItemNameBlockItem(ModBlocks.BLUEBERRY_CROP.get(),
+                    new Item.Properties().tab(ModCreativeModeTab.TUTORIAL_TAB)));
+
+    public static final RegistryObject<Item> BLUEBERRY = ITEMS.register("blueberry",
+            () -> new Item(new Item.Properties().tab(ModCreativeModeTab.TUTORIAL_TAB)
+                    .food(new FoodProperties.Builder().nutrition(2).saturationMod(2f).build())));
 
     // 将注册表加入到Forge总线上，只有这样才能把物品加入到游戏中，被TutorialMod进行调用。
     public static void register(IEventBus eventBus){

@@ -2,6 +2,7 @@ package net.flandre923.tutorialmod.block;
 
 import com.mojang.blaze3d.shaders.Uniform;
 import net.flandre923.tutorialmod.TutorialMod;
+import net.flandre923.tutorialmod.block.custom.BlueberryCropBlock;
 import net.flandre923.tutorialmod.block.custom.JumpBlock;
 import net.flandre923.tutorialmod.block.custom.ZirconLampBlock;
 import net.flandre923.tutorialmod.item.ModCreativeModeTab;
@@ -11,6 +12,7 @@ import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
@@ -61,6 +63,10 @@ public class ModBlocks {
     public static final RegistryObject<Block> JUMPY_BLOCK = registerBlock("jumpy_block",
             () -> new JumpBlock(BlockBehaviour.Properties.of(Material.STONE).strength(6f).requiresCorrectToolForDrops()),
             ModCreativeModeTab.TUTORIAL_TAB);
+
+    public  static final RegistryObject<Block> BLUEBERRY_CROP = BLOCKS.register("blueberry_crop",
+            () -> new BlueberryCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
+
     // 注册Block，由于需要注册Block以及该Block的Item所以这里写了一个函数用于同时注册Block和Item
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
         RegistryObject<T> toReturn = BLOCKS.register(name,block);
