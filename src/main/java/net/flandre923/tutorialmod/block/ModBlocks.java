@@ -3,6 +3,7 @@ package net.flandre923.tutorialmod.block;
 import com.mojang.blaze3d.shaders.Uniform;
 import net.flandre923.tutorialmod.TutorialMod;
 import net.flandre923.tutorialmod.block.custom.JumpBlock;
+import net.flandre923.tutorialmod.block.custom.ZirconLampBlock;
 import net.flandre923.tutorialmod.item.ModCreativeModeTab;
 import net.flandre923.tutorialmod.item.ModItem;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -52,6 +53,11 @@ public class ModBlocks {
             UniformInt.of(3,7)),
             ModCreativeModeTab.TUTORIAL_TAB);
 
+    public static final RegistryObject<Block> ZIRCON_LAMP = registerBlock("zircon_lamp",
+            () -> new ZirconLampBlock(BlockBehaviour.Properties.of(Material.STONE).strength(6f).requiresCorrectToolForDrops()
+                    .lightLevel(state -> state.getValue(ZirconLampBlock.LIT) ? 15:0)),
+            ModCreativeModeTab.TUTORIAL_TAB);
+
     public static final RegistryObject<Block> JUMPY_BLOCK = registerBlock("jumpy_block",
             () -> new JumpBlock(BlockBehaviour.Properties.of(Material.STONE).strength(6f).requiresCorrectToolForDrops()),
             ModCreativeModeTab.TUTORIAL_TAB);
@@ -61,6 +67,8 @@ public class ModBlocks {
         registryBlockItem(name,toReturn,tab);
         return toReturn;
     }
+
+
 
     // 用于注册方块对应的物品，由于方块和物品是分开的，需要都注册，通过之前的ModItem.ITEMS的注册方法注册Item，使用BlockItem创建方块的Item
     private static <T extends Block>RegistryObject<Item> registryBlockItem(String name,RegistryObject<T> block,CreativeModeTab tab){
