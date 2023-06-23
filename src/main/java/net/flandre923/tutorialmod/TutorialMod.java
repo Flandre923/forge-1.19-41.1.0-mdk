@@ -3,6 +3,7 @@ package net.flandre923.tutorialmod;
 import com.mojang.logging.LogUtils;
 import net.flandre923.tutorialmod.block.ModBlocks;
 import net.flandre923.tutorialmod.item.ModItem;
+import net.flandre923.tutorialmod.villager.ModVillagers;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.layers.RenderLayer;
@@ -26,12 +27,16 @@ public class TutorialMod
         IEventBus modEventBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModItem.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModVillagers.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
     }
 
     private void commonSetup(final FMLCommonSetupEvent event)
     {
+        event.enqueueWork(()->{
+            ModVillagers.registerPOIs();
+        });
     }
 
 
