@@ -3,10 +3,10 @@ package net.flandre923.tutorialmod;
 import com.mojang.logging.LogUtils;
 import net.flandre923.tutorialmod.block.ModBlocks;
 import net.flandre923.tutorialmod.item.ModItem;
+import net.flandre923.tutorialmod.painting.ModPaintings;
 import net.flandre923.tutorialmod.villager.ModVillagers;
-import net.minecraft.client.renderer.ItemBlockRenderTypes;
-import net.minecraft.client.renderer.RenderType;
-import net.minecraft.client.renderer.entity.layers.RenderLayer;
+import net.flandre923.tutorialmod.world.feature.ModConfiguredFeatures;
+import net.flandre923.tutorialmod.world.feature.ModPlacedFeatures;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -28,6 +28,9 @@ public class TutorialMod
         ModItem.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModVillagers.register(modEventBus);
+        ModPaintings.register(modEventBus);
+        ModConfiguredFeatures.register(modEventBus);
+        ModPlacedFeatures.register(modEventBus);
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
     }
