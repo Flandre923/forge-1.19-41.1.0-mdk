@@ -17,6 +17,13 @@
   "block.tutorialmod.blueberry_crop": "Blueberry Crop",
 
 
-  "entity.minecraft.villager.tutorialmod.jumpy_master": "Jumpy Master"
+  "entity.minecraft.villager.tutorialmod.jumpy_master": "Jumpy Master",
+
+  "key.category.tutorialmod.tutorial": "Tutorial Mod",
+  "key.tutorialmod.drink_water": "Drink Water",
+
+
+  "message.tutorialmod.drink_water": "Drinking Water",
+  "message.tutorialmod.no_water": "No water nearby!"
 
 }

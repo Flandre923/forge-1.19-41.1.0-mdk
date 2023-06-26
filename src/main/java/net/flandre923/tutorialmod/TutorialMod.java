@@ -3,6 +3,7 @@ package net.flandre923.tutorialmod;
 import com.mojang.logging.LogUtils;
 import net.flandre923.tutorialmod.block.ModBlocks;
 import net.flandre923.tutorialmod.item.ModItem;
+import net.flandre923.tutorialmod.networking.ModMessages;
 import net.flandre923.tutorialmod.painting.ModPaintings;
 import net.flandre923.tutorialmod.villager.ModVillagers;
 import net.flandre923.tutorialmod.world.feature.ModConfiguredFeatures;
@@ -40,6 +41,8 @@ public class TutorialMod
         event.enqueueWork(()->{
             ModVillagers.registerPOIs();
         });
+
+        ModMessages.register();
     }
 
 
