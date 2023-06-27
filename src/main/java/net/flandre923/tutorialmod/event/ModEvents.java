@@ -3,15 +3,27 @@ package net.flandre923.tutorialmod.event;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
 import net.flandre923.tutorialmod.TutorialMod;
 import net.flandre923.tutorialmod.item.ModItem;
+import net.flandre923.tutorialmod.thirst.PlayerThirst;
+import net.flandre923.tutorialmod.thirst.PlayerThirstProvider;
 import net.flandre923.tutorialmod.villager.ModVillagers;
+import net.minecraft.commands.arguments.ResourceLocationArgument;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.trading.MerchantOffer;
+import net.minecraftforge.common.capabilities.RegisterCapabilitiesEvent;
+import net.minecraftforge.event.AttachCapabilitiesEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.LogicalSide;
 import net.minecraftforge.fml.common.Mod;
 
 import java.util.List;
@@ -45,4 +57,57 @@ public class ModEvents {
             ));
         }
     }
+
+
+    /*
+    这是一个给实体，方块实体，物品等添加能力的事件，
+    Entity仅针对实体
+     */
+    @SubscribeEvent
+    public static void onAttachCapabilitiesPlayer(AttachCapabilitiesEvent<Entity> event){
+        if(event.getObject() instanceof  Player){
+            if(!event.getObject().getCapability(PlayerThirstProvider.PLAYER_THIRST).isPresent()){
+                event.addCapability(new ResourceLocation(TutorialMod.MOD_ID,"properties"),new PlayerThirstProvider());
+            }
+        }
+    }
+
+    /*
+    玩家死亡重生时候回调用此事件，从末地返回主世界时候会发生此事件
+    死亡克隆为true，末地返回是false
+     */
+    @SubscribeEvent
+    public static void onPlayCloned(PlayerEvent.Clone event){
+        if(event.isWasDeath()){
+            event.getOriginal().getCapability(PlayerThirstProvider.PLAYER_THIRST).ifPresent(oldStore -> {
+                event.getOriginal().getCapability(PlayerThirstProvider.PLAYER_THIRST).ifPresent(newStore->{
+                    newStore.copyFrom(oldStore);
+                });
+            });
+        }
+    }
+
+    @SubscribeEvent
+    public static void onRegisterCapabilities(RegisterCapabilitiesEvent event){
+        event.register(PlayerThirst.class);
+    }
+
+    /*
+    监听每个玩家每刻更新的动作，
+    可以监听该事件做一个更新的操作。
+    每秒20tick
+    20 *  10 = 200 * 0.005 = 1
+     */
+    @SubscribeEvent
+    public static void onPlayTick(TickEvent.PlayerTickEvent event){
+        if (event.side == LogicalSide.SERVER) {
+                event.player.getCapability(PlayerThirstProvider.PLAYER_THIRST).ifPresent(thirst->{
+                    if(thirst.getThirst() > 0 && event.player.getRandom().nextFloat() < 0.005f){ // 平均10s
+                        thirst.subThirst(1);
+                        event.player.sendSystemMessage(Component.literal("Subtracted Thirst"));
+                    }
+                });
+        }
+    }
+
 }
