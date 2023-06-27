@@ -1,5 +1,6 @@
 package net.flandre923.tutorialmod.networking.packet;
 
+import net.flandre923.tutorialmod.networking.ModMessages;
 import net.flandre923.tutorialmod.thirst.PlayerThirstProvider;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.FriendlyByteBuf;
@@ -42,12 +43,14 @@ public class DrinkWaterC2SPacket {
                 player.getCapability(PlayerThirstProvider.PLAYER_THIRST).ifPresent(playerThirst -> {
                     playerThirst.addThirst(1);
                     player.sendSystemMessage(Component.literal("Current Thirst" + playerThirst.getThirst() ).withStyle(ChatFormatting.AQUA));
+                    ModMessages.sendToPlayer(new ThirstDataSyncS2CPacket(playerThirst.getThirst()),player);
                 });
             }else{
                 player.sendSystemMessage(Component.translatable(MESSAGE_NO_WATER).withStyle(ChatFormatting.RED));
                 player.getCapability(PlayerThirstProvider.PLAYER_THIRST).ifPresent(playerThirst -> {
                     player.sendSystemMessage(Component.literal("Current Thirst " + playerThirst.getThirst())
                             .withStyle(ChatFormatting.AQUA));
+                    ModMessages.sendToPlayer(new ThirstDataSyncS2CPacket(playerThirst.getThirst()),player);
                 });
             }
 
