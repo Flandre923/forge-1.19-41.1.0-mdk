@@ -4,6 +4,9 @@
   "item.tutorialmod.eight_ball": "Eight Ball",
   "item.tutorialmod.blueberry": "Blueberry",
   "item.tutorialmod.blueberry_seeds": "Blueberry Seeds",
+  "item.tutorialmod.soap_water_bucket": "Soap Water Bucket",
+  "item.tutorialmod.tutorial_sword": "Tutorial Sword",
+
 
   "itemGroup.tutorialtab": "Zircon Tutorial Tab",
 
@@ -15,6 +18,7 @@
   "block.tutorialmod.jumpy_block": "Jumpy Block",
   "block.tutorialmod.zircon_lamp": "Zircon Lamp",
   "block.tutorialmod.blueberry_crop": "Blueberry Crop",
+  "block.tutorialmod.gen_infusing_station": "Gen Infusing Station",
 
 
   "entity.minecraft.villager.tutorialmod.jumpy_master": "Jumpy Master",

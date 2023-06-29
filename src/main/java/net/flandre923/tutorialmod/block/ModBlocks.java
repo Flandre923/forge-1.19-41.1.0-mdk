@@ -3,8 +3,10 @@ package net.flandre923.tutorialmod.block;
 import com.mojang.blaze3d.shaders.Uniform;
 import net.flandre923.tutorialmod.TutorialMod;
 import net.flandre923.tutorialmod.block.custom.BlueberryCropBlock;
+import net.flandre923.tutorialmod.block.custom.GemInfusingStationBlock;
 import net.flandre923.tutorialmod.block.custom.JumpBlock;
 import net.flandre923.tutorialmod.block.custom.ZirconLampBlock;
+import net.flandre923.tutorialmod.fluid.ModFluids;
 import net.flandre923.tutorialmod.item.ModCreativeModeTab;
 import net.flandre923.tutorialmod.item.ModItem;
 import net.minecraft.util.valueproviders.UniformInt;
@@ -14,6 +16,7 @@ import net.minecraft.world.item.Item;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.LiquidBlock;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -76,6 +79,12 @@ public class ModBlocks {
     public  static final RegistryObject<Block> BLUEBERRY_CROP = BLOCKS.register("blueberry_crop",
             () -> new BlueberryCropBlock(BlockBehaviour.Properties.copy(Blocks.WHEAT)));
 
+    public static final RegistryObject<LiquidBlock> SOAP_WATER_BLOCK = BLOCKS.register("soap_water_block",
+            ()->new LiquidBlock(ModFluids.SOURCE_SOAP_WATER,BlockBehaviour.Properties.copy(Blocks.WATER)));// liquidBlock用于创建流体的方块。属性直接复制的water的属性。
+
+    public static final RegistryObject<Block> GEM_INFUSING_STATION = registerBlock("gen_infusing_station",
+            ()->new GemInfusingStationBlock(BlockBehaviour.Properties.of(Material.METAL).strength(6F)
+                    .requiresCorrectToolForDrops().noOcclusion()),ModCreativeModeTab.TUTORIAL_TAB);
     // 注册Block，由于需要注册Block以及该Block的Item所以这里写了一个函数用于同时注册Block和Item
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
         RegistryObject<T> toReturn = BLOCKS.register(name,block);
@@ -93,4 +102,5 @@ public class ModBlocks {
     public static void register(IEventBus eventBus){
         BLOCKS.register(eventBus);
     }
+
 }
