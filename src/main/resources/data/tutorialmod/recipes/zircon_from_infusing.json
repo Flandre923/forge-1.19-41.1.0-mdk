@@ -2,10 +2,10 @@
   "type": "tutorialmod:gem_infusing",
   "ingredients": [
     {
-      "item": "minecraft:stick"
+      "item": "tutorialmod:raw_zircon"
     }
   ],
   "output": {
-    "item": "minecraft:diamond"
+    "item": "tutorialmod:zircon"
   }
 }

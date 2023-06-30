@@ -8,6 +8,7 @@ import net.flandre923.tutorialmod.fluid.ModFluids;
 import net.flandre923.tutorialmod.item.ModItem;
 import net.flandre923.tutorialmod.networking.ModMessages;
 import net.flandre923.tutorialmod.painting.ModPaintings;
+import net.flandre923.tutorialmod.recipe.ModRecipes;
 import net.flandre923.tutorialmod.screen.GemInfusingStationMenu;
 import net.flandre923.tutorialmod.screen.GemInfusingStationScreen;
 import net.flandre923.tutorialmod.screen.ModMenuTypes;
@@ -52,6 +53,8 @@ public class TutorialMod
 
         ModFluids.register(modEventBus);
         ModFluidTypes.register(modEventBus);
+
+        ModRecipes.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
