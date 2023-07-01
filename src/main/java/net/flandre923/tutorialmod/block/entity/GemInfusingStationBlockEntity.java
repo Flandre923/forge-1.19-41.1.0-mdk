@@ -1,5 +1,6 @@
 package net.flandre923.tutorialmod.block.entity;
 
+import net.flandre923.tutorialmod.block.custom.GemInfusingStationBlock;
 import net.flandre923.tutorialmod.item.ModItem;
 import net.flandre923.tutorialmod.recipe.GemInfusingStationRecipe;
 import net.flandre923.tutorialmod.screen.GemInfusingStationMenu;
@@ -15,7 +16,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,6 +27,7 @@ import net.minecraftforge.items.ItemStackHandler;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Map;
 import java.util.Optional;
 
 public class GemInfusingStationBlockEntity extends BlockEntity implements MenuProvider {
@@ -35,12 +36,40 @@ public class GemInfusingStationBlockEntity extends BlockEntity implements MenuPr
         protected void onContentsChanged(int slot) {
             setChanged();
         }
+
+        // 判断对应的slot是否可以放入物品。
+        @Override
+        public boolean isItemValid(int slot, @NotNull ItemStack stack) {
+            return switch (slot) {
+                case 0 -> stack.getItem() == ModItem.ZIRCON.get();
+                case 1 -> stack.getItem() == ModItem.RAW_ZIRCON.get();
+                case 2 -> false;
+                default -> super.isItemValid(slot,stack);
+            };
+        }
+
     };// 3 表示机器中的3个槽位
+
 
     protected final ContainerData data;
     private int progress = 0;
     private int maxProgress = 78;
     private LazyOptional<IItemHandler> lazyItemHandler = LazyOptional.empty();
+
+
+    // 方向玩家朝向是北方向（相对于玩家的朝向定位，不是世界里面的方向）默认方向，
+    // 输出对应的slot,如果是true可以输出，如果是false不能输出
+    // 输入对应的slot，如果是true则可以插入内容，如果是false则不能插入内容
+    private final Map<Direction, LazyOptional<WrappedHandler>> directionWrappedHandlerMap =
+            Map.of(Direction.DOWN, LazyOptional.of(() -> new WrappedHandler(itemStackHandler, (i) -> i == 2, (i, s) -> false)),
+                    Direction.NORTH, LazyOptional.of(() -> new WrappedHandler(itemStackHandler, (index) -> index == 1,
+                            (index, stack) -> itemStackHandler.isItemValid(1, stack))),
+                    Direction.SOUTH, LazyOptional.of(() -> new WrappedHandler(itemStackHandler, (i) -> i == 2, (i, s) -> false)),
+                    Direction.EAST, LazyOptional.of(() -> new WrappedHandler(itemStackHandler, (i) -> i == 1,
+                            (index, stack) -> itemStackHandler.isItemValid(1, stack))),
+                    Direction.WEST, LazyOptional.of(() -> new WrappedHandler(itemStackHandler, (index) -> index == 0 || index == 1,
+                            (index, stack) -> itemStackHandler.isItemValid(0, stack) || itemStackHandler.isItemValid(1, stack))));
+
 
     public GemInfusingStationBlockEntity(BlockPos blockPos, BlockState blockState) {
         super(ModBlockEntities.GEM_INFUSION_STATION.get(), blockPos, blockState);
@@ -84,8 +113,27 @@ public class GemInfusingStationBlockEntity extends BlockEntity implements MenuPr
 
     @Override
     public @NotNull <T> LazyOptional<T> getCapability(@NotNull Capability<T> cap, @Nullable Direction side) {
+
         if(cap == ForgeCapabilities.ITEM_HANDLER){
-            return lazyItemHandler.cast();
+            if(side == null ){
+                return lazyItemHandler.cast();
+            }
+
+            if(directionWrappedHandlerMap.containsKey(side)){
+                Direction localDirection = this.getBlockState().getValue(GemInfusingStationBlock.FACING);
+
+                if(side == Direction.UP || side == Direction.DOWN){
+                    return directionWrappedHandlerMap.get(side).cast();
+                }
+
+                return switch (localDirection){
+                    default -> directionWrappedHandlerMap.get(side.getOpposite()).cast();
+                    case EAST -> directionWrappedHandlerMap.get(side.getClockWise()).cast();
+                    case SOUTH -> directionWrappedHandlerMap.get(side).cast();
+                    case WEST -> directionWrappedHandlerMap.get(side.getCounterClockWise()).cast();
+                };
+
+            }
         }
         return super.getCapability(cap, side);
     }
