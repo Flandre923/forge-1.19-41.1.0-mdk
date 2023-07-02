@@ -2,6 +2,7 @@ package net.flandre923.tutorialmod.screen;
 
 import net.flandre923.tutorialmod.block.ModBlocks;
 import net.flandre923.tutorialmod.block.entity.GemInfusingStationBlockEntity;
+import net.minecraft.commands.arguments.blocks.BlockStateArgument;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
@@ -124,5 +125,9 @@ public class GemInfusingStationMenu extends AbstractContainerMenu {
         for(int i=0;i<9;i++){
             this.addSlot(new Slot(playerInventory,i,8+i*18,144));
         }
+    }
+
+    public GemInfusingStationBlockEntity  getBlockEntity() {
+        return this.entity;
     }
 }
