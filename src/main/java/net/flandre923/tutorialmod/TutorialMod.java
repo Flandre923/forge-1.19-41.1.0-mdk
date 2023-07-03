@@ -3,13 +3,14 @@ package net.flandre923.tutorialmod;
 import com.mojang.logging.LogUtils;
 import net.flandre923.tutorialmod.block.ModBlocks;
 import net.flandre923.tutorialmod.block.entity.ModBlockEntities;
+import net.flandre923.tutorialmod.entity.ModEntityTypes;
+import net.flandre923.tutorialmod.entity.client.ChomperRenderer;
 import net.flandre923.tutorialmod.fluid.ModFluidTypes;
 import net.flandre923.tutorialmod.fluid.ModFluids;
 import net.flandre923.tutorialmod.item.ModItem;
 import net.flandre923.tutorialmod.networking.ModMessages;
 import net.flandre923.tutorialmod.painting.ModPaintings;
 import net.flandre923.tutorialmod.recipe.ModRecipes;
-import net.flandre923.tutorialmod.screen.GemInfusingStationMenu;
 import net.flandre923.tutorialmod.screen.GemInfusingStationScreen;
 import net.flandre923.tutorialmod.screen.ModMenuTypes;
 import net.flandre923.tutorialmod.villager.ModVillagers;
@@ -18,6 +19,8 @@ import net.flandre923.tutorialmod.world.feature.ModPlacedFeatures;
 import net.minecraft.client.gui.screens.MenuScreens;
 import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
+import net.minecraft.client.renderer.entity.EntityRendererProvider;
+import net.minecraft.client.renderer.entity.EntityRenderers;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -27,6 +30,8 @@ import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import software.bernie.geckolib3.GeckoLib;
+
+import javax.swing.text.html.parser.Entity;
 
 // The value here should match an entry in the META-INF/mods.toml file
 @Mod(TutorialMod.MOD_ID)
@@ -58,6 +63,7 @@ public class TutorialMod
         ModRecipes.register(modEventBus);
 
         GeckoLib.initialize();
+        ModEntityTypes.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
@@ -84,6 +90,7 @@ public class TutorialMod
             ItemBlockRenderTypes.setRenderLayer(ModFluids.FLOWING_SOAP_WATER.get(),RenderType.translucent());
 
             MenuScreens.register(ModMenuTypes.GEM_INFUSING_STATION_MENU.get(), GemInfusingStationScreen::new);
+            EntityRenderers.register(ModEntityTypes.CHOMPER.get(), ChomperRenderer::new);
         }
     }
 }

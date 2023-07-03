@@ -2,10 +2,12 @@ package net.flandre923.tutorialmod.item;
 
 import net.flandre923.tutorialmod.TutorialMod;
 import net.flandre923.tutorialmod.block.ModBlocks;
+import net.flandre923.tutorialmod.entity.ModEntityTypes;
 import net.flandre923.tutorialmod.fluid.ModFluids;
 import net.flandre923.tutorialmod.item.custom.EightBallItem;
 import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.*;
+import net.minecraftforge.common.ForgeSpawnEggItem;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
@@ -42,6 +44,10 @@ public class ModItem {
     public static final RegistryObject<Item> TUTORIAL_SWORD = ITEMS.register("tutorial_sword",
             ()->new SwordItem(Tiers.DIAMOND,10,5f,new Item.Properties().tab(ModCreativeModeTab.TUTORIAL_TAB).stacksTo(1)));
 
+
+    public static final RegistryObject<Item> CHOMPER_SPAWN_EGG = ITEMS.register("chomper_spawn_egg",
+            ()->new ForgeSpawnEggItem(ModEntityTypes.CHOMPER,0x22b341,0x19732e,
+                    new Item.Properties().tab(ModCreativeModeTab.TUTORIAL_TAB)));
 
     // 将注册表加入到Forge总线上，只有这样才能把物品加入到游戏中，被TutorialMod进行调用。
     public static void register(IEventBus eventBus){
