@@ -1,6 +1,7 @@
 package net.flandre923.tutorialmod.integration;
 
 import mezz.jei.api.constants.VanillaTypes;
+import mezz.jei.api.forge.ForgeTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
 import mezz.jei.api.helpers.IGuiHelper;
@@ -14,6 +15,8 @@ import net.flandre923.tutorialmod.recipe.GemInfusingStationRecipe;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
+
+import java.util.List;
 
 // 自定义一个JEI的合成分类
 public class GemInfusingStationRecipeCategory implements IRecipeCategory<GemInfusingStationRecipe> {
@@ -65,6 +68,9 @@ public class GemInfusingStationRecipeCategory implements IRecipeCategory<GemInfu
     public void setRecipe(IRecipeLayoutBuilder builder, GemInfusingStationRecipe recipe, IFocusGroup focuses) {
         // 在86,15的位置设置一个用于输入的slot，内容为recipe的ingredients的第0个。
         builder.addSlot(RecipeIngredientRole.INPUT,86,15).addIngredients(recipe.getIngredients().get(0));
+        builder.addSlot(RecipeIngredientRole.INPUT,55,15)
+                .addIngredients(ForgeTypes.FLUID_STACK, List.of(recipe.getFluid()))
+                        .setFluidRenderer(64000,false,16,61);
         // 在86,60的位置设置一个用于输出的slot，内容为recipe的合成结果。
         builder.addSlot(RecipeIngredientRole.OUTPUT,86,60).addItemStack(recipe.getResultItem());
     }

@@ -10,7 +10,10 @@ import net.minecraft.world.inventory.*;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.material.Fluid;
+import net.minecraft.world.level.material.FluidState;
 import net.minecraftforge.common.capabilities.ForgeCapabilities;
+import net.minecraftforge.fluids.FluidStack;
 import net.minecraftforge.items.SlotItemHandler;
 
 
@@ -18,6 +21,7 @@ public class GemInfusingStationMenu extends AbstractContainerMenu {
     public final GemInfusingStationBlockEntity entity;
     private final Level level;
     private final ContainerData data;
+    private FluidStack fluidStack;
 
     public GemInfusingStationMenu(int id, Inventory inventory, FriendlyByteBuf extraData){
         this(id,inventory, inventory.player.level.getBlockEntity(extraData.readBlockPos()),new SimpleContainerData(2));
@@ -29,6 +33,7 @@ public class GemInfusingStationMenu extends AbstractContainerMenu {
         this.entity = (GemInfusingStationBlockEntity) entity;
         this.level = inv.player.level;
         this.data =data;
+        this.fluidStack = this.entity.getFluidStack();
 
         addPlayerInventory(inv);
         addPlayerHotbar(inv);
@@ -47,6 +52,13 @@ public class GemInfusingStationMenu extends AbstractContainerMenu {
         return data.get(0) > 0;
     }
 
+    public void setFluidStack(FluidStack fluidStack){
+        this.fluidStack = fluidStack;
+    }
+
+    public FluidStack getFluidStack(){
+        return fluidStack;
+    }
     public int getScaledProgress() {
         int progress = this.data.get(0);
         int maxProgress = this.data.get(1);  // Max Progress
