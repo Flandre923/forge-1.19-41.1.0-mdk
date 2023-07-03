@@ -5,23 +5,23 @@ import net.flandre923.tutorialmod.TutorialMod;
 import net.flandre923.tutorialmod.block.ModBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.OreFeatures;
+import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.levelgen.GeodeBlockSettings;
+import net.minecraft.world.level.levelgen.GeodeCrackSettings;
+import net.minecraft.world.level.levelgen.GeodeLayerSettings;
 import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
 import net.minecraft.world.level.levelgen.feature.Feature;
 import net.minecraft.world.level.levelgen.feature.WeightedPlacedFeature;
-import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.OreConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.RandomFeatureConfiguration;
-import net.minecraft.world.level.levelgen.feature.configurations.TreeConfiguration;
+import net.minecraft.world.level.levelgen.feature.configurations.*;
 import net.minecraft.world.level.levelgen.feature.featuresize.TwoLayersFeatureSize;
 import net.minecraft.world.level.levelgen.feature.foliageplacers.BlobFoliagePlacer;
 import net.minecraft.world.level.levelgen.feature.stateproviders.BlockStateProvider;
 import net.minecraft.world.level.levelgen.feature.trunkplacers.StraightTrunkPlacer;
 import net.minecraft.world.level.levelgen.structure.templatesystem.BlockMatchTest;
-import net.minecraftforge.client.event.RegisterGuiOverlaysEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
-import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.RegistryObject;
 
@@ -91,6 +91,42 @@ public class ModConfiguredFeatures {
                     new RandomFeatureConfiguration(List.of(new WeightedPlacedFeature(
                             ModPlacedFeatures.RED_MAPLE_CHECKED.getHolder().get(),
                             0.5F)),ModPlacedFeatures.RED_MAPLE_CHECKED.getHolder().get())));
+
+
+    // 自定义地质结构
+    // Feature.GEODE 表示地下的球
+    // GeodeConfiguration创建地质结构配置器。
+        // GeodeBlockSettings创建不同层次的配置
+             // 内部填充
+             // 外壳
+             // 外壳中嵌入的内容
+             // 中间层
+             // 外层
+             // 内部生成
+    // 不能被替换的方块tag
+    // 不能生成地址结构的方块
+    // 设置地质结构的层数置
+        // 外壳厚度，填充结构厚度，中心厚度，嵌入方块多少
+    // 出现裂缝的配置
+        // 概率，长度，深度
+    // 是否替换流体
+    // x方向，y方向，z方向宽
+    // Y轴偏移，不是出现在18层以上，每个区块出现的概率，每个区块的最大生成数目
+
+    public static final RegistryObject<ConfiguredFeature<?, ?>> ZIRCON_GEODE = CONFIGURED_FEATURES.register("zircon_geode",
+            () -> new ConfiguredFeature<>(Feature.GEODE,
+                    new GeodeConfiguration(new GeodeBlockSettings(BlockStateProvider.simple(Blocks.AIR),
+                            BlockStateProvider.simple(Blocks.DEEPSLATE),
+                            BlockStateProvider.simple(ModBlocks.ZIRCON_ORE.get()),
+                            BlockStateProvider.simple(Blocks.DIRT),
+                            BlockStateProvider.simple(Blocks.EMERALD_BLOCK),
+                            List.of(ModBlocks.ZIRCON_BLOCK.get().defaultBlockState()),
+                            BlockTags.FEATURES_CANNOT_REPLACE , BlockTags.GEODE_INVALID_BLOCKS),
+                            new GeodeLayerSettings(1.7D, 1.2D, 2.5D, 3.5D),
+                            new GeodeCrackSettings(0.25D, 1.5D, 1), 0.5D, 0.1D,
+                            true, UniformInt.of(3, 8),
+                            UniformInt.of(2, 6), UniformInt.of(1, 2),
+                            -18, 18, 0.075D, 1)));
     public static void register(IEventBus eventBus){
         CONFIGURED_FEATURES.register(eventBus);
     }
