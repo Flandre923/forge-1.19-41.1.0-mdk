@@ -2,22 +2,21 @@ package net.flandre923.tutorialmod.block;
 
 import com.mojang.blaze3d.shaders.Uniform;
 import net.flandre923.tutorialmod.TutorialMod;
-import net.flandre923.tutorialmod.block.custom.BlueberryCropBlock;
-import net.flandre923.tutorialmod.block.custom.GemInfusingStationBlock;
-import net.flandre923.tutorialmod.block.custom.JumpBlock;
-import net.flandre923.tutorialmod.block.custom.ZirconLampBlock;
+import net.flandre923.tutorialmod.block.custom.*;
 import net.flandre923.tutorialmod.fluid.ModFluids;
 import net.flandre923.tutorialmod.item.ModCreativeModeTab;
 import net.flandre923.tutorialmod.item.ModItem;
+import net.flandre923.tutorialmod.world.feature.tree.RedMapleTreeGrower;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
-import net.minecraft.world.level.block.Block;
-import net.minecraft.world.level.block.Blocks;
-import net.minecraft.world.level.block.DropExperienceBlock;
-import net.minecraft.world.level.block.LiquidBlock;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.block.*;
 import net.minecraft.world.level.block.state.BlockBehaviour;
+import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.Material;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -91,7 +90,62 @@ public class ModBlocks {
         registryBlockItem(name,toReturn,tab);
         return toReturn;
     }
+    ///  树
+    public static final RegistryObject<Block> RED_MAPLE_LOG = registerBlock("red_maple_log",
+            ()->new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LOG)
+                    .requiresCorrectToolForDrops()),ModCreativeModeTab.TUTORIAL_TAB);
 
+    public static final RegistryObject<Block> RED_MAPLE_WOOD = registerBlock("red_maple_wood",
+            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.OAK_WOOD)
+                    .requiresCorrectToolForDrops()), ModCreativeModeTab.TUTORIAL_TAB);
+    public static final RegistryObject<Block> STRIPPED_RED_MAPLE_LOG = registerBlock("stripped_red_maple_log",
+            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_LOG)
+                    .requiresCorrectToolForDrops()), ModCreativeModeTab.TUTORIAL_TAB);
+    public static final RegistryObject<Block> STRIPPED_RED_MAPLE_WOOD = registerBlock("stripped_red_maple_wood",
+            () -> new ModFlammableRotatedPillarBlock(BlockBehaviour.Properties.copy(Blocks.STRIPPED_OAK_WOOD)
+                    .requiresCorrectToolForDrops()), ModCreativeModeTab.TUTORIAL_TAB);
+
+    public static final RegistryObject<Block> RED_MAPLE_PLANKS = registerBlock("red_maple_planks",
+            () -> new Block(BlockBehaviour.Properties.copy(Blocks.OAK_PLANKS)
+                    .requiresCorrectToolForDrops()) {
+                @Override
+                public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return true;
+                }
+
+                @Override
+                public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 5;
+                }
+
+                @Override
+                public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 20;
+                }
+            }, ModCreativeModeTab.TUTORIAL_TAB);
+    public static final RegistryObject<Block> RED_MAPLE_LEAVES = registerBlock("red_maple_leaves",
+            () -> new LeavesBlock(BlockBehaviour.Properties.copy(Blocks.OAK_LEAVES)
+                    .requiresCorrectToolForDrops()){
+                @Override
+                public boolean isFlammable(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return true;
+                }
+
+                @Override
+                public int getFlammability(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 30;
+                }
+
+                @Override
+                public int getFireSpreadSpeed(BlockState state, BlockGetter level, BlockPos pos, Direction direction) {
+                    return 60;
+                }
+            }, ModCreativeModeTab.TUTORIAL_TAB);
+
+    // 树苗
+    public static final RegistryObject<Block> RED_MAPLE_SAPLING = registerBlock("red_maple_sapling",
+            () -> new SaplingBlock(new RedMapleTreeGrower(),
+                    BlockBehaviour.Properties.copy(Blocks.OAK_SAPLING)), ModCreativeModeTab.TUTORIAL_TAB);
 
 
     // 用于注册方块对应的物品，由于方块和物品是分开的，需要都注册，通过之前的ModItem.ITEMS的注册方法注册Item，使用BlockItem创建方块的Item

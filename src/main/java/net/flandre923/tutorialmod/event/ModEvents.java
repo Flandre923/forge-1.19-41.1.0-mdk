@@ -13,8 +13,12 @@ import net.flandre923.tutorialmod.thirst.PlayerThirstProvider;
 import net.flandre923.tutorialmod.villager.ModVillagers;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.EntityType;
+import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.animal.Chicken;
 import net.minecraft.world.entity.npc.VillagerProfession;
 import net.minecraft.world.entity.npc.VillagerTrades;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +31,7 @@ import net.minecraftforge.event.AttachCapabilitiesEvent;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.EntityAttributeCreationEvent;
 import net.minecraftforge.event.entity.EntityJoinLevelEvent;
+import net.minecraftforge.event.entity.living.LivingHurtEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.event.village.VillagerTradesEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -126,6 +131,22 @@ public class ModEvents {
                     player.getCapability(PlayerThirstProvider.PLAYER_THIRST).ifPresent(thirst -> {
                         ModMessages.sendToPlayer(new ThirstDataSyncS2CPacket(thirst.getThirst()),player);
                     });
+                }
+            }
+        }
+
+        @SubscribeEvent
+        public static void onLivingHurt(LivingHurtEvent event){
+            if(event.getEntity() instanceof Chicken){
+                if(event.getSource().getEntity() instanceof Player player){
+                    if(player.getMainHandItem().getItem() == Items.STICK){
+                        player.sendSystemMessage(Component.literal(player.getName().getString() + "哎呦你干嘛啊"));
+                        // 在受到攻击的鸡的位置生成一个小鸡
+                        EntityType.CHICKEN.spawn((ServerLevel) player.level,null,null,event.getEntity().blockPosition(),
+                                MobSpawnType.COMMAND,true,false);
+                    }else{
+                        player.sendSystemMessage(Component.literal("唱，跳，rap，篮球"));
+                    }
                 }
             }
         }

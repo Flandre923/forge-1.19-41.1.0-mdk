@@ -49,6 +49,10 @@ public class ModItem {
             ()->new ForgeSpawnEggItem(ModEntityTypes.CHOMPER,0x22b341,0x19732e,
                     new Item.Properties().tab(ModCreativeModeTab.TUTORIAL_TAB)));
 
+    public static final RegistryObject<Item> ZIRCON_PICKAXE = ITEMS.register("zircon_pickaxe",
+            ()->new PickaxeItem(ModToolTiers.ZIRCON,2,3f,
+                    new Item.Properties().tab(ModCreativeModeTab.TUTORIAL_TAB).stacksTo(1)));
+
     // 将注册表加入到Forge总线上，只有这样才能把物品加入到游戏中，被TutorialMod进行调用。
     public static void register(IEventBus eventBus){
         ITEMS.register(eventBus);

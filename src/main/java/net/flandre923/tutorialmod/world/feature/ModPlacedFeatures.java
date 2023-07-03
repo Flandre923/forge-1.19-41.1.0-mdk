@@ -1,7 +1,10 @@
 package net.flandre923.tutorialmod.world.feature;
 
 import net.flandre923.tutorialmod.TutorialMod;
+import net.flandre923.tutorialmod.block.ModBlocks;
 import net.minecraft.core.Registry;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
+import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.eventbus.api.IEventBus;
@@ -30,6 +33,14 @@ public class ModPlacedFeatures {
     public static final RegistryObject<PlacedFeature> NETHER_ZIRCON_ORE_PLACED = PLACED_FEATURES.register("nether_zircon_ore_placed",
             () -> new PlacedFeature(ModConfiguredFeatures.NETHER_ZIRCON_ORE.getHolder().get(), commonOrePlacement(7,
                     HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(-80), VerticalAnchor.aboveBottom(80)))));
+
+    public static final RegistryObject<PlacedFeature> RED_MAPLE_CHECKED  = PLACED_FEATURES.register("red_maple_checked",
+            ()-> new PlacedFeature(ModConfiguredFeatures.RED_MAPLE.getHolder().get(),
+                    List.of(PlacementUtils.filteredByBlockSurvival(ModBlocks.RED_MAPLE_SAPLING.get()))));
+
+    public static final RegistryObject<PlacedFeature> RED_MAPLE_PLACED = PLACED_FEATURES.register("red_maple_placed",
+            ()-> new PlacedFeature(ModConfiguredFeatures.RED_MAPLE_SPAWN.getHolder().get(),
+                    VegetationPlacements.treePlacement(PlacementUtils.countExtra(3,0.1f,2))));
 
     private static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {
         return List.of(p_195347_, InSquarePlacement.spread(), p_195348_, BiomeFilter.biome());

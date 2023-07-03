@@ -26,6 +26,14 @@
   "key.category.tutorialmod.tutorial": "Tutorial Mod",
   "key.tutorialmod.drink_water": "Drink Water",
 
+  "block.tutorialmod.red_maple_log": "Red Maple Log",
+  "block.tutorialmod.red_maple_planks": "Red Maple Planks",
+  "block.tutorialmod.red_maple_wood": "Red Maple Wood",
+  "block.tutorialmod.stripped_red_maple_log": "Stripped Red Maple Log",
+  "block.tutorialmod.stripped_red_maple_wood": "Stripped Red Maple Wood",
+  "block.tutorialmod.red_maple_leaves": "Red Maple Leaves",
+  "block.tutorialmod.red_maple_sapling": "Red Maple Sapling",
+
   "tutorialmod.tooltip.liquid.amount.with.capacity": "%s / %s mB",
   "tutorialmod.tooltip.liquid.amount": "%s mB"
 }
