@@ -8,6 +8,7 @@ import net.flandre923.tutorialmod.entity.client.ChomperRenderer;
 import net.flandre923.tutorialmod.fluid.ModFluidTypes;
 import net.flandre923.tutorialmod.fluid.ModFluids;
 import net.flandre923.tutorialmod.item.ModItem;
+import net.flandre923.tutorialmod.loot.ModLootModifiers;
 import net.flandre923.tutorialmod.networking.ModMessages;
 import net.flandre923.tutorialmod.painting.ModPaintings;
 import net.flandre923.tutorialmod.recipe.ModRecipes;
@@ -69,6 +70,8 @@ public class TutorialMod
 
         GeckoLib.initialize();
         ModEntityTypes.register(modEventBus);
+
+        ModLootModifiers.register(modEventBus);
 
         modEventBus.addListener(this::commonSetup);
         MinecraftForge.EVENT_BUS.register(this);
