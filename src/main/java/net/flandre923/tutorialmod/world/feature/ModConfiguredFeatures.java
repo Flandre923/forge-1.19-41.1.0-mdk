@@ -5,10 +5,12 @@ import net.flandre923.tutorialmod.TutorialMod;
 import net.flandre923.tutorialmod.block.ModBlocks;
 import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.features.OreFeatures;
+import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.tags.BlockTags;
 import net.minecraft.util.valueproviders.ConstantInt;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.levelgen.GeodeBlockSettings;
 import net.minecraft.world.level.levelgen.GeodeCrackSettings;
 import net.minecraft.world.level.levelgen.GeodeLayerSettings;
@@ -127,6 +129,17 @@ public class ModConfiguredFeatures {
                             true, UniformInt.of(3, 8),
                             UniformInt.of(2, 6), UniformInt.of(1, 2),
                             -18, 18, 0.075D, 1)));
+
+    // 表示这个feature是花的生成地
+    // 随机生成，每个区块生成32朵，xz延伸6，y延伸2
+    // 仅生在在空的地方，使用简单的simpleblock方式放置，放置方块是花朵。
+    public static final RegistryObject<ConfiguredFeature<?,?>> JASMINE =
+            CONFIGURED_FEATURES.register("jasmine",
+                    () -> new ConfiguredFeature<>(Feature.FLOWER,
+                            new RandomPatchConfiguration(32,6,2,
+                                    PlacementUtils.onlyWhenEmpty(Feature.SIMPLE_BLOCK,
+                                            new SimpleBlockConfiguration(BlockStateProvider.simple(ModBlocks.JASMINE.get()))))));
+
     public static void register(IEventBus eventBus){
         CONFIGURED_FEATURES.register(eventBus);
     }

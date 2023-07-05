@@ -10,6 +10,8 @@ import net.flandre923.tutorialmod.world.feature.tree.RedMapleTreeGrower;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.util.valueproviders.UniformInt;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
@@ -84,6 +86,18 @@ public class ModBlocks {
     public static final RegistryObject<Block> GEM_INFUSING_STATION = registerBlock("gen_infusing_station",
             ()->new GemInfusingStationBlock(BlockBehaviour.Properties.of(Material.METAL).strength(6F)
                     .requiresCorrectToolForDrops().noOcclusion()),ModCreativeModeTab.TUTORIAL_TAB);
+
+    // 花朵
+    // 药水的效果，持续时间5，
+    public static final RegistryObject<Block> JASMINE = registerBlock("jasmine",
+            () -> new FlowerBlock(MobEffects.GLOWING,5,BlockBehaviour.Properties.copy(Blocks.DANDELION)),
+            ModCreativeModeTab.TUTORIAL_TAB);
+
+    // 盆栽花
+    public static final RegistryObject<Block> POTTED_JASMINE = BLOCKS.register("potted_jasmine",
+            ()-> new FlowerPotBlock(()->((FlowerPotBlock) Blocks.FLOWER_POT),ModBlocks.JASMINE,
+                    BlockBehaviour.Properties.copy(Blocks.DANDELION)));
+
     // 注册Block，由于需要注册Block以及该Block的Item所以这里写了一个函数用于同时注册Block和Item
     private static <T extends Block>RegistryObject<T> registerBlock(String name, Supplier<T> block, CreativeModeTab tab){
         RegistryObject<T> toReturn = BLOCKS.register(name,block);

@@ -6,6 +6,9 @@ import net.minecraft.core.Registry;
 import net.minecraft.data.worldgen.placement.PlacementUtils;
 import net.minecraft.data.worldgen.placement.VegetationPlacements;
 import net.minecraft.world.level.levelgen.VerticalAnchor;
+import net.minecraft.world.level.levelgen.feature.ConfiguredFeature;
+import net.minecraft.world.level.levelgen.feature.Feature;
+import net.minecraft.world.level.levelgen.feature.configurations.FeatureConfiguration;
 import net.minecraft.world.level.levelgen.placement.*;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.config.ModConfig;
@@ -43,6 +46,8 @@ public class ModPlacedFeatures {
                     VegetationPlacements.treePlacement(PlacementUtils.countExtra(3,0.1f,2))));
 
 
+
+
     /**
      * RegistryObject<PlacedFeature> 注册 放置特征
      * new PlacedFeature(...)作为放置特征的配置,自定义的放置特征配置
@@ -57,7 +62,13 @@ public class ModPlacedFeatures {
                     RarityFilter.onAverageOnceEvery(50), InSquarePlacement.spread(),
                     HeightRangePlacement.uniform(VerticalAnchor.aboveBottom(6), VerticalAnchor.absolute(50)),
                     BiomeFilter.biome())));
-
+    /**
+     * 每16个区块生成一次，区块内随机分布，高地形生成，任何生物群系。
+     */
+    public static final RegistryObject<PlacedFeature> JASMINE_PLACED =
+            PLACED_FEATURES.register("jasmine_placed",()->new PlacedFeature(ModConfiguredFeatures.JASMINE.getHolder().get(),
+                    List.of(RarityFilter.onAverageOnceEvery(16),InSquarePlacement.spread(),
+                            PlacementUtils.HEIGHTMAP, BiomeFilter.biome())));
 
     private static List<PlacementModifier> orePlacement(PlacementModifier p_195347_, PlacementModifier p_195348_) {
         return List.of(p_195347_, InSquarePlacement.spread(), p_195348_, BiomeFilter.biome());

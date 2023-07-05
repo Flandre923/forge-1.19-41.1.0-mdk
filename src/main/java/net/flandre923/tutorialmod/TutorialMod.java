@@ -21,6 +21,11 @@ import net.minecraft.client.renderer.ItemBlockRenderTypes;
 import net.minecraft.client.renderer.RenderType;
 import net.minecraft.client.renderer.entity.EntityRendererProvider;
 import net.minecraft.client.renderer.entity.EntityRenderers;
+import net.minecraft.world.entity.SpawnPlacements;
+import net.minecraft.world.entity.monster.Monster;
+import net.minecraft.world.level.block.Blocks;
+import net.minecraft.world.level.block.FlowerPotBlock;
+import net.minecraft.world.level.levelgen.Heightmap;
 import net.minecraftforge.common.MinecraftForge;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
@@ -72,7 +77,17 @@ public class TutorialMod
     private void commonSetup(final FMLCommonSetupEvent event)
     {
         event.enqueueWork(()->{
+            ((FlowerPotBlock) Blocks.FLOWER_POT).addPlant(ModBlocks.JASMINE.getId(),
+                    ModBlocks.POTTED_JASMINE);
             ModVillagers.registerPOIs();
+            /**
+             * SpawnPlacements.Type.ON_GROUND 在地面上生成
+             *  Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,在不受叶子主档的方块上生成。
+             *  Monster::checkMonsterSpawnRules 一般怪物的生成规则
+             */
+            SpawnPlacements.register(ModEntityTypes.CHOMPER.get(),
+                    SpawnPlacements.Type.ON_GROUND, Heightmap.Types.MOTION_BLOCKING_NO_LEAVES,
+                    Monster::checkMonsterSpawnRules);
         });
         ModMessages.register();
 
